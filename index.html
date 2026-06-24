@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sewa Seserahan Pernikahan</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f0eb;
+      margin: 0;
+      padding: 30px 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+      color: #2c2118;
+    }
+
+    p.sub {
+      text-align: center;
+      color: #888;
+      margin-bottom: 30px;
+      font-size: 0.9rem;
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      width: 220px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-img {
+      width: 100%;
+      height: 160px;
+      background: #ece6de;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .card-body {
+      padding: 14px;
+    }
+
+    .card-body h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      color: #2c2118;
+    }
+
+    .card-body .price {
+      color: #9c7830;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* MODAL */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+    }
+
+    .overlay.open { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      max-width: 360px;
+      width: 90%;
+    }
+
+    .modal h2 { margin: 0 0 8px; color: #2c2118; }
+    .modal p  { color: #666; font-size: 0.88rem; margin-bottom: 16px; }
+
+    .price-list { list-style: none; padding: 0; margin: 0 0 20px; }
+    .price-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0ebe4;
+      font-size: 0.9rem;
+    }
+    .price-list li span:last-child { color: #9c7830; font-weight: 600; }
+
+    .btn-close {
+      width: 100%;
+      padding: 10px;
+      background: #2c2118;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Sewa Seserahan Pernikahan</h1>
+<p class="sub">Klik kartu untuk melihat harga sewa per hari</p>
+
+<div class="grid">
+  <div class="card" onclick="buka(0)">
+    <div class="card-img">🪡</div>
+    <div class="card-body">
+      <h3>Nampan Hias Kain</h3>
+      <p class="price">habis / hari</p>
+    </div>
+  </div>
+  <div class="card" onclick="buka(1)">
+    <div class="card-img">💎</div>
+    <div class="card-body">
+      <h3>Kotak Perhiasan Emas</h3>
+      <p class="price">habis / hari</p>
+    </div>
+  </div>
+  <div class="card" onclick="buka(2)">
+    <div class="card-img">🪵</div>
+    <div class="card-body">
+      <h3>Dulang Ukir Jati</h3>
+      <p class="price">habis/ hari</p>
+    </div>
+  </div>
+  <div class="card" onclick="buka(3)">
+    <div class="card-img">
+      <img src="WhatsApp Image 2026-06-24 at 18.23.26.jpeg"  style="width:100%;height:100%;object-fit:cover; alt="">
+    </div>
+    <div class="card-body">
+      <h3>Rangkaian Bunga Segar</h3>
+      <p class="price">Rp 250.000 / hari</p>
+    </div>
+  </div>
+  <div class="card" onclick="buka(4)">
+    <div class="card-img">
+      <img src="seserahan-pernikahan-4.png"style="width:100%;height:100%;object-fit:cover; alt=""></div>
+    <div class="card-body">
+      <h3>Keranjang esklusif Hias</h3>
+      <p class="price">Rp 320.000 / hari</p>
+    </div>
+  </div>
+  <div class="card" onclick="buka(5)">
+    <div class="card-img">
+      <img src="WhatsApp Image 2026-06-24 at 18.23.16.jpeg" style="width:100%;height:100%;object-fit:cover;alt="">
+    </div>
+    <div class="card-body">
+      <h3>kerajang Mini Vintage</h3>
+      <p class="price">Rp 300.000 / hari</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="tutup(event)">
+  <div class="modal">
+    <h2 id="m-nama"></h2>
+    <p id="m-desc"></p>
+    <ul class="price-list" id="m-prices"></ul>
+    <button class="btn-close" onclick="tutup()">Tutup</button>
+  </div>
+</div>
+
+<script>
+  const data = [
+    {
+      nama: "Nampan Hias Kain",
+      desc: "Nampan kayu dibalut kain premium dengan motif monogram elegan.",
+      harga: [["1 Hari","Rp 150.000"],["3 Hari","Rp 400.000"],["7 Hari","Rp 800.000"]]
+    },
+    {
+      nama: "Kotak Perhiasan Emas",
+      desc: "Kotak geometris kaca bening berframe emas untuk tampilan mewah.",
+      harga: [["1 Hari","Rp 200.000"],["3 Hari","Rp 520.000"],["7 Hari","Rp 1.100.000"]]
+    },
+    {
+      nama: "Dulang Ukir Jati",
+      desc: "Dulang kayu jati ukiran tangan khas Jawa bernuansa tradisional.",
+      harga: [["1 Hari","Rp 175.000"],["3 Hari","Rp 450.000"],["7 Hari","Rp 950.000"]]
+    },
+    {
+      nama: "Rangkaian Bunga Segar",
+      desc: "Rangkaian bunga segar premium oleh florist berpengalaman.",
+      harga: [["1 Hari","Rp 250.000"],["3 Hari","Rp 650.000"],["7 Hari","Rp 1.200.000"]]
+    },
+    {
+      nama: "Keranjang Rotan Hias",
+      desc: "Keranjang rotan alami dihias pita sutra dan bunga kering.",
+      harga: [["1 Hari","Rp 120.000"],["3 Hari","Rp 320.000"],["7 Hari","Rp 700.000"]]
+    },
+    {
+      nama: "Koper Mini Vintage",
+      desc: "Koper mini bergaya vintage dengan kunci kuningan yang elegan.",
+      harga: [["1 Hari","Rp 300.000"],["3 Hari","Rp 780.000"],["7 Hari","Rp 1.600.000"]]
+    },
+  ];
+
+  function buka(i) {
+    const d = data[i];
+    document.getElementById('m-nama').textContent = d.nama;
+    document.getElementById('m-desc').textContent = d.desc;
+    document.getElementById('m-prices').innerHTML = d.harga
+      .map(h => `<li><span>${h[0]}</span><span>${h[1]}</span></li>`).join('');
+    document.getElementById('overlay').classList.add('open');
+  }
+
+  function tutup(e) {
+    if (!e || e.target === document.getElementById('overlay'))
+      document.getElementById('overlay').classList.remove('open');
+  }
+</script>
+</body>
+</html>
